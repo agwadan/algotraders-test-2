@@ -5,11 +5,13 @@ import {
   FetchDirectorNames,
   FetchMovieProductionYears,
   FetchMovieGenres,
-  FetchMovieNames
+  FetchMovieNames,
+  FetchMovies
 } from '../api/movie';
 
 const Movies = () => {
 
+  const [showMovie, setShowMovie] = useState('');
   const [movieData, setMovieData] = useState({
     actorNames: [],
     directorNames: [],
@@ -17,6 +19,14 @@ const Movies = () => {
     yearReleased: [],
     genre: []
   });
+
+  const [searchMovie, setSearchMovie] = useState({
+    movie: '',
+    director: '',
+    actor: '',
+    year: '',
+    genre: ''
+  })
 
   useEffect(() => {
     FetchMovieNames()
@@ -50,22 +60,41 @@ const Movies = () => {
       .catch(err => console.log(err))
   }, [movieData])
 
+  useEffect(() => {
+    FetchMovies(
+      searchMovie.movie,
+      searchMovie.actor,
+      searchMovie.director,
+      searchMovie.year,
+      searchMovie.genre
+    )
+      .then(res => {
+        setShowMovie(res)
+      })
+      .catch(err => console.log(err))
+  })
+
 
 
   return (
-    <div>Movies
-
+    <div>
+      <h1>Filter to get search for a movie</h1>
+      <br /><br />
       <label>Actor Name</label>
-      <select>
+      <select
+        value={searchMovie.actor}
+      >
         {
           movieData.actorNames.map((data, index) =>
             <option key={index}>{data.name}</option>
           )
         }
       </select>
-
+      <br /><br />
       <label>Director Name</label>
-      <select>
+      <select
+        value={searchMovie.director}
+      >
         {
           movieData.directorNames.map((data, index) =>
             <option key={index}>{data.name}</option>
@@ -73,8 +102,11 @@ const Movies = () => {
         }
       </select>
 
+      <br /><br />
       <label>Movie Names</label>
-      <select>
+      <select
+        value={searchMovie.movie}
+      >
         {
           movieData.movieNames.map((title, index) =>
             <option key={index}>{title}</option>
@@ -82,8 +114,12 @@ const Movies = () => {
         }
       </select>
 
+      <br /><br />
+
       <label>Year Released</label>
-      <select>
+      <select
+        value={searchMovie.year}
+      >
         {
           movieData.yearReleased.map((data, index) =>
             <option key={index}>{data}</option>
@@ -91,14 +127,21 @@ const Movies = () => {
         }
       </select>
 
+      <br /><br />
       <label>Genre</label>
-      <select>
+      <select
+        value={searchMovie.genre}
+      >
         {
           movieData.genre.map((data, index) =>
             <option key={index}>{data.name}</option>
           )
         }
       </select>
+
+      <br /><br />
+      <h2>Movies List</h2>
+
     </div>
   )
 }
