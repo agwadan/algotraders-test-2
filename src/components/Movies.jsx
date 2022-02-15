@@ -1,6 +1,12 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
-import { FetchMovieNames } from '../api/movie';
+import {
+  FetchActorNames,
+  FetchDirectorNames,
+  FetchMovieProductionYears,
+  FetchMovieGenres,
+  FetchMovieNames
+} from '../api/movie';
 
 const Movies = () => {
 
@@ -20,10 +26,25 @@ const Movies = () => {
       })
   }, [movieData])
 
+  useEffect(() => {
+    FetchActorNames()
+      .then((data) => setMovieData({ ...movieData, actorNames: data }))
+      .catch(err => console.log(err))
+  }, [movieData])
+
+  console.log(movieData.actorNames);
+
   return (
     <div>Movies
 
       <label>Actor Name</label>
+      <select>
+        {
+          movieData.actorNames.map((data, index) =>
+            <option key={index}>{data.name}</option>
+          )
+        }
+      </select>
 
       <label>Director Name</label>
 
