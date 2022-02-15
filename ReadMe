@@ -1,0 +1,9 @@
+Versions:
+---------
+node v14.18.2
+npm v6.14.15
+
+Commands:
+---------
+1- Install node modules -> npm install
+2- Start application -> npm start
