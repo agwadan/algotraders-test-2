@@ -32,7 +32,25 @@ const Movies = () => {
       .catch(err => console.log(err))
   }, [movieData])
 
-  console.log(movieData.actorNames);
+  useEffect(() => {
+    FetchDirectorNames()
+      .then((data) => setMovieData({ ...movieData, directorNames: data }))
+      .catch(err => console.log(err))
+  }, [movieData])
+
+  useEffect(() => {
+    FetchMovieProductionYears()
+      .then((data) => setMovieData({ ...movieData, yearReleased: data }))
+      .catch(err => console.log(err))
+  }, [movieData])
+
+  useEffect(() => {
+    FetchMovieGenres()
+      .then((data) => setMovieData({ ...movieData, genre: data }))
+      .catch(err => console.log(err))
+  }, [movieData])
+
+
 
   return (
     <div>Movies
@@ -47,6 +65,13 @@ const Movies = () => {
       </select>
 
       <label>Director Name</label>
+      <select>
+        {
+          movieData.directorNames.map((data, index) =>
+            <option key={index}>{data.name}</option>
+          )
+        }
+      </select>
 
       <label>Movie Names</label>
       <select>
@@ -58,10 +83,22 @@ const Movies = () => {
       </select>
 
       <label>Year Released</label>
+      <select>
+        {
+          movieData.yearReleased.map((data, index) =>
+            <option key={index}>{data}</option>
+          )
+        }
+      </select>
 
       <label>Genre</label>
-
-
+      <select>
+        {
+          movieData.genre.map((data, index) =>
+            <option key={index}>{data.name}</option>
+          )
+        }
+      </select>
     </div>
   )
 }
