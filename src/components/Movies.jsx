@@ -4,27 +4,43 @@ import { FetchMovieNames } from '../api/movie';
 
 const Movies = () => {
 
-  const [data, setData] = useState([]);
+  const [movieData, setMovieData] = useState({
+    actorNames: [],
+    directorNames: [],
+    movieNames: [],
+    yearReleased: [],
+    genre: []
+  });
 
-  useEffect(async () => {
-    await FetchMovieNames().then((data) => setData(data))
-  }, [])
+  useEffect(() => {
+    FetchMovieNames()
+      .then((data) => setMovieData({ ...movieData, movieNames: data }))
+      .catch(err => {
+        console.log(err);
+      })
+  }, [movieData])
 
-  console.log(data);
   return (
     <div>Movies
 
+      <label>Actor Name</label>
+
+      <label>Director Name</label>
+
+      <label>Movie Names</label>
       <select>
         {
-          data.map((title, index) =>
+          movieData.movieNames.map((title, index) =>
             <option key={index}>{title}</option>
           )
         }
       </select>
-      <form action="">
-        <input>
-        </input>
-      </form>
+
+      <label>Year Released</label>
+
+      <label>Genre</label>
+
+
     </div>
   )
 }
